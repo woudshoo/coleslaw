@@ -1,0 +1,34 @@
+{namespace coleslaw.theme.hyde}
+
+{template index}
+<h1 class="title">{$index.title}</h1>
+{foreach $post in $index.posts}
+  <div class="article-meta">
+    <a class="article-title" href="{$config.domain}/posts/{$post.slug}.html">{$post.title}</a>
+    <div class="date"> posted on {$post.date}</div>
+    <div class="article">{$post.text |noAutoescape}</div>
+  </div>
+{/foreach}
+<div id="relative-nav">
+  {if $prev} <a href="{$prev}.html">Previous</a> {/if}
+  {if $next} <a href="{$next}.html">Next</a> {/if}
+</div>
+{if $tags}
+<div id="tagsoup">
+  <p>This blog covers
+    {foreach $tag in $tags}
+      <a href="{$config.domain}/tag/{$tag}.html">{$tag}</a>
+      {if not isLast($tag)}, {/if}
+    {/foreach}
+</div>
+{/if}
+{if $months}
+<div id="monthsoup">
+  <p>View posts from
+    {foreach $month in $months}
+      <a href="{$config.domain}/date/{$month}.html">{$month}</a>
+      {if not isLast($month)}, {/if}
+    {/foreach}
+</div>
+{/if}
+{/template}
