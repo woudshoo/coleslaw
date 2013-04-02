@@ -2,7 +2,7 @@
 #header { float: right; margin-left: 1em; margin-bottom: 1em }
 a { text-decoration: none; color: #992900 }
 a.anchor { color: black }
-.date { font-style: italic }
+.date { font-style: italic; font-size: 0.7em; color: gray; }
 .title { margin-left: 1em }
 .article-meta { margin-left: 2.2em; margin-bottom: 2.2em }
 .archive-title { font-size: 1em } .article-title { font-size: 2em }
@@ -14,7 +14,7 @@ a.anchor { color: black }
 .navigation { font-size: 1.2em; border-bottom: 1px solid }
 body { background-color: white; font-family: Optima; }
 pre { overflow: auto; margin-left: 1em; padding: 0.5em; border-left: 1px dashed;
-      background-color: white; padding: .75em .5em; font-family: (unquote mono-font) }
+      padding: .75em .5em; font-family: (unquote mono-font) }
 tt { font-size: .9em; font-family: (unquote mono-font) }
 
 /* Stolen from lisppaste for the colorize output of 3bmd */
