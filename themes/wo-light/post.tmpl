@@ -2,7 +2,7 @@
 
 {template post}
 <div class="article-meta">{\n}
-  <h1 class="title">{$post.title}</h1>{\n}
+  <h1 class="article-title">{$post.title}</h1>{\n}
   <div class="tags">{\n}
     Tagged as {foreach $tag in $post.tags}
                 <a href="../tag/{$tag}.html">{$tag}</a>{nil}
