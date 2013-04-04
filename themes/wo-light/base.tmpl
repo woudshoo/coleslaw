@@ -6,6 +6,7 @@
   <head>
     <title>{$config.title}</title>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+    <base href={$config.domain}/>
     <link href= "{$config.domain}/css/style.css" rel="stylesheet" type="text/css" />
     <link rel="alternate" href="{$config.domain}/rss.xml" type="application/rss+xml" />
     {if $injections.head}
@@ -16,7 +17,7 @@
   </head>
   <body>
     <div class="navigation">
-      <a href="{$config.domain}">{$config.title}</a> |
+      <a href="{$config.domain}/index.html">{$config.title}</a> |
       {foreach $link in $config.sitenav}
         <a href="{$link.url}">{$link.name}</a>
         {if not isLast($link)} | {/if}
