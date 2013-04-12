@@ -36,6 +36,7 @@ Additional args to render CONTENT can be passed via RENDER-ARGS."
   (ensure-directories-exist filepath)
   (with-open-file (out filepath
                    :direction :output
+                   :if-exists :overwrite
                    :if-does-not-exist :create)
     (write-line page out)))
 
@@ -75,9 +76,18 @@ Additional args to render CONTENT can be passed via RENDER-ARGS."
 (defun main (config-key)
   "Load the user's config section corresponding to CONFIG-KEY, then
 compile and deploy the blog."
-  (let (*injections*)
-    (load-config config-key)
-    (load-content)
-    (compile-theme (theme *config*))
-    (compile-blog (staging *config*))
-    (deploy (staging *config*))))
+  (load-config config-key)
+  (load-content)
+  (compile-theme (theme *config*))
+  (compile-blog (staging *config*))
+  (deploy (staging *config*)))
+
+(defun preview (path &optional (content-type 'post))
+  "Render the content at PATH under user's configured repo and save it to
+~/tmp.html. Load the user's config and theme if necessary."
+  (unless *config*
+    (load-config nil)
+    (compile-theme (theme *config*)))
+  (let* ((file (rel-path (repo *config*) path))
+         (content (construct content-type (read-content file))))
+    (write-page "~/tmp.html" (render-page content))))
