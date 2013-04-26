@@ -1,6 +1,8 @@
 ## Changes for 0.9.2 (2013-05-xx):
 
-* A new and improved implementation of tags.
+* **INCOMPATIBLE CHANGE**: Renamed staging, deploy config options staging-dir, deploy-dir.
+* A plugin for Github Pages support. (thanks @mrordinaire!)
+* A new and improved implementation of tags. (thanks @woudshoo!)
 * A THEME-DOES-NOT-EXIST error is raised when the theme can't be found.
 
 ## Changes for 0.9.1 (2013-04-10):
@@ -12,7 +14,7 @@
 
 ## Changes for 0.9 (2013-02-20):
 
-* INCOMPATIBLE CHANGE: All :plugins in .coleslawrc must be lists. (i.e. (mathjax) not mathjax)
+* **INCOMPATIBLE CHANGE**: All :plugins in .coleslawrc must be lists. (i.e. (mathjax) not mathjax)
 * Add support for analytics via Google.
 * Add support for Restructured Text via cl-docutils.
 * Add support for deploying to Amazon S3.

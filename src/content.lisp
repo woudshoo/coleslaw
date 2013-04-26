@@ -9,7 +9,12 @@
 
 (defun make-tag (str)
   "Takes a string and returns a TAG instance with a name and slug."
-  (make-instance 'tag :name (string-trim " " str) :slug (slugify str)))
+  (let ((trimmed (string-trim " " str)))
+    (make-instance 'tag :name trimmed :slug (slugify trimmed))))
+
+(defun tag-slug= (a b)
+  "Test if the slugs for tag A and B are equal."
+  (string= (tag-slug a) (tag-slug b)))
 
 (defclass content ()
   ((tags :initform nil :initarg :tags :accessor content-tags)
@@ -20,6 +25,14 @@
 (defun construct (content-type args)
   "Create an instance of CONTENT-TYPE with the given ARGS."
   (apply 'make-instance content-type args))
+
+(defun tag-p (tag obj)
+  "Test if OBJ is tagged with TAG."
+  (member tag (content-tags obj) :test #'tag-slug=))
+
+(defun month-p (month obj)
+  "Test if OBJ was written in MONTH."
+  (search month (content-date obj)))
 
 (defgeneric discover (content-type)
   (:documentation "Load all content of the given CONTENT-TYPE from disk."))

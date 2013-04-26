@@ -18,17 +18,17 @@
 (defclass int-index (index) ())
 
 (defmethod page-path ((object index))
-  (rel-path (staging *config*) (index-id object)))
+  (rel-path (staging-dir *config*) (index-id object)))
 (defmethod page-path ((object tag-index))
-  (rel-path (staging *config*) "tag/~a" (index-id object)))
+  (rel-path (staging-dir *config*) "tag/~a" (index-id object)))
 (defmethod page-path ((object date-index))
-  (rel-path (staging *config*) "date/~a" (index-id object)))
+  (rel-path (staging-dir *config*) "date/~a" (index-id object)))
 (defmethod page-path ((object int-index))
-  (rel-path (staging *config*) "~d" (index-id object)))
+  (rel-path (staging-dir *config*) "~d" (index-id object)))
 
 (defun all-months ()
   "Retrieve a list of all months with published content."
-  (let ((months (mapcar (lambda (x) (get-month (content-date x)))
+  (let ((months (mapcar (lambda (x) (subseq (content-date x) 0 7))
                         (hash-table-values *content*))))
     (sort (remove-duplicates months :test #'string=) #'string>)))
 
@@ -38,26 +38,17 @@
          (tags (remove-duplicates dupes :test #'string= :key #'tag-slug)))
     (sort tags #'string< :key #'tag-name)))
 
-(defun get-month (timestamp)
-  "Extract the YYYY-MM portion of TIMESTAMP."
-  (subseq timestamp 0 7))
-
 (defun index-by-tag (tag content)
   "Return an index of all CONTENT matching the given TAG."
-  (labels ((tag-slug= (a b)
-             (string= (tag-slug a) (tag-slug b)))
-           (valid-p (obj)
-             (member tag (content-tags obj) :test #'tag-slug=)))
-    (make-instance 'tag-index :id (tag-slug tag)
-                   :posts (remove-if-not #'valid-p content)
-                   :title (format nil "Posts tagged ~a" (tag-name tag)))))
+  (make-instance 'tag-index :id (tag-slug tag)
+                 :posts (remove-if-not (lambda (x) (tag-p tag x)) content)
+                 :title (format nil "Posts tagged ~a" (tag-name tag))))
 
 (defun index-by-month (month content)
   "Return an index of all CONTENT matching the given MONTH."
-  (flet ((valid-p (obj) (search month (content-date obj))))
-    (make-instance 'date-index :id month
-                               :posts (remove-if-not #'valid-p content)
-                               :title (format nil "Posts from ~a" month))))
+  (make-instance 'date-index :id month
+                 :posts (remove-if-not (lambda (x) (month-p month x)) content)
+                 :title (format nil "Posts from ~a" month)))
 
 (defun index-by-n (i content &optional (step 10))
   "Return the index for the Ith page of CONTENT in reverse chronological order."
