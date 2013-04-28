@@ -1,21 +1,44 @@
-#content { background: #fff; padding-top: 1em }
+#content { background: #fff; padding-top: 1em; width: 1024px; align: center;}
 #header { float: right; margin-left: 1em; margin-bottom: 1em }
+
 a { text-decoration: none; color: #992900 }
 a.anchor { color: black }
+
 .date { font-style: italic; font-size: 0.7em; color: gray; }
-.title { margin-left: 1em }
-.article-meta { margin-left: 2.2em; margin-bottom: 2.2em }
-.archive-title { font-size: 1em } .article-title { font-size: 2em }
-.article-content { margin-left: 2.2em }
+.title { margin-left: 0em;}
+.article-meta { margin-left: 0.0em; margin-bottom: 2.2em }
+.archive-title { font-size: 1em } 
+.article-title { font-size: 2em; margin-bottom: 0.0em }
+.article-content { margin-left: 0.0em }
 .fineprint { text-align: center; font-size: .9em; margin-top: .5em }
 .tag-low { font-size: .8em; font-weight: 200 }
 .tag-medium { font-size: 1.2em; font-weight: 600 }
 .tag-high { font-size: 1.8em; font-weight: 800 }
-.navigation { font-size: 1.2em; border-bottom: 1px solid }
-body { background-color: white; font-family: Optima; }
+.navigation { font-size: 1.2em; border-bottom: 1px solid; }
+
+body { background-color: white; 
+       font-family: Optima, palatino; 
+       width: 1024px; 
+       padding: 20px;
+       margin: auto;}
+
 pre { overflow: auto; margin-left: 1em; padding: 0.5em; border-left: 1px dashed;
       padding: .75em .5em; font-family: (unquote mono-font) }
 tt { font-size: .9em; font-family: (unquote mono-font) }
+
+
+
+.about { float: right; width: 20%; margin-left: 30px; margin-bottom: 30px;}
+.about p {margin-bottom: 0pt;}
+.imagebar {overflow: hidden;}
+.imagebar img {max-width: 100%;}
+.about h2 {font-size: 100%; margin-bottom: 2px;}
+
+.relative-nav {width: 100%}
+.prev {display:inline;}
+.next {display:inline; float: right;}
+
+
 
 /* Stolen from lisppaste for the colorize output of 3bmd */
 .paste { background-color: #F4F4F4; color: black; }

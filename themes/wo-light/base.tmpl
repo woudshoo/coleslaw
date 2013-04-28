@@ -15,7 +15,11 @@
       {/foreach}
     {/if}
   </head>
+
   <body>
+/*********************************************************************************
+ NAVIGATION BAR
+*********************************************************************************/
     <div class="navigation">
       <a href="{$config.domain}/index.html">{$config.title}</a> |
       {foreach $link in $config.sitenav}
@@ -23,14 +27,28 @@
         {if not isLast($link)} | {/if}
       {/foreach}
     </div>
+    <div class="imagebar">
+      <img src="{$config.domain}/css/trees-small.png">
+    </div>
+/********************************************************************************
+  CONTENT
+********************************************************************************/
     <div id="content">
       {$raw |noAutoescape}
     </div>
+
+/********************************************************************************
+   INJECTIONS AT THE END 
+********************************************************************************/
     {if $injections.body}
       {foreach $injection in $injections.body}
         {$injection |noAutoescape}
       {/foreach}
     {/if}
+
+/********************************************************************************
+  FOOTER
+********************************************************************************/
     <div class="fineprint">
       <hr>
       Unless otherwise credited all material
@@ -42,7 +60,6 @@
         </a>
       {/if}
       by {$config.author}
-      <img align="right" src="{$config.domain}/css/logo_small.jpg" />
     </div>
   </body>
 </html>

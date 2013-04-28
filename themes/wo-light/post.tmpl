@@ -1,23 +1,54 @@
 {namespace coleslaw.theme.wo-light}
 
 {template post}
-<div class="article-meta">{\n}
-  <h1 class="article-title">{$post.title}</h1>{\n}
-  <div class="tags">{\n}
+/*********************************************************************************
+ RIGHT HAND SIDE ABOUT BAR
+*********************************************************************************/
+    <div class="about">
+      <h2>Author</h2>
+      Willem Rein Oudshoorn
+      <h2>Contact</h2>
+      <a href="mailto:woudshoo+blog@xs4all.nl">woudshoo+blog@xs4all.nl</a>
+      {if $tags}
+      <h2>Tags</h2>
+         {foreach $tag in $tags}
+	   <a href="{$config.domain}/tag/{$tag.slug}.html">{$tag.name}</a>{nil}
+	   {if not isLast($tag)},{sp}{/if}
+	 {/foreach}
+      {/if}
+      {if $months}
+      <h2>Older Posts</h2>
+          {foreach $month in $months}
+	  <a href="{$config.domain}/date/{$month}.html">{$month}</a>{nil}
+          {if not isLast($month)},{sp}{/if}
+          {/foreach}
+       {/if}
+       <p>
+       This blog is powered by:
+      <a href="https://github.com/redline6561/coleslaw">
+      <img width=100% src="{$config.domain}/css/logo_small.jpg" /></a>
+      </p>
+    </div>
+/********************************************************************************
+  POST
+********************************************************************************/
+<div class="article-meta">
+  <h1 class="article-title">{$post.title}</h1>
+  <div class="tags">
     Tagged as {foreach $tag in $post.tags}
                 <a href="../tag/{$tag.slug}.html">{$tag.name}</a>{nil}
                     {if not isLast($tag)},{sp}{/if}
               {/foreach}
-  </div>{\n}
-  <div class="date">{\n}
+  </div>
+  <div class="date">
     Written on {$post.date}
-  </div>{\n}
-</div>{\n}
-<div class="article-content">{\n}
+  </div>
+</div>
+<div class="article-content">
   {$post.text |noAutoescape}
-</div>{\n}
-<div class="relative-nav">{\n}
-  {if $prev} <a href="{$config.domain}/posts/{$prev.slug}.html">Previous</a><br> {/if}{\n}
-  {if $next} <a href="{$config.domain}/posts/{$next.slug}.html">Next</a><br> {/if}{\n}
-</div>{\n}
+</div>
+<div class="relative-nav">
+  {if $prev} <div class="prev"><a class="prev" href="{$config.domain}/posts/{$prev.slug}.html">&lt; Previous</a></div> {/if}
+  {if $next} <div class="next"><a class="right" href="{$config.domain}/posts/{$next.slug}.html">Next &gt;</a></div> {/if}
+</div>
 {/template}
