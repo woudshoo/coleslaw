@@ -10,6 +10,12 @@
       <h2>Contact</h2>
       <a href="mailto:woudshoo+blog@xs4all.nl">woudshoo+blog@xs4all.nl</a>
       {if $tags}
+      <h2>{$index.title}</h2>
+      <ul>
+	{foreach $post in $index.posts}
+	  <li><a href="#{$post.slug}">{$post.title}</a></li>
+	{/foreach}
+      </ul>
       <h2>Tags</h2>
          {foreach $tag in $tags}
 	   <a href="{$config.domain}/tag/{$tag.slug}.html">{$tag.name}</a>{nil}
@@ -24,7 +30,7 @@
           {/foreach}
        {/if}
        <p>
-       This blog is powered by:
+<!--       This blog is powered by: -->
       <a href="https://github.com/redline6561/coleslaw">
       <img width=100% src="{$config.domain}/css/logo_small.jpg" /></a>
       </p>
@@ -38,7 +44,7 @@
     <hr>
   {/if}
   <div class="article-meta">
-    <a class="article-title" href="{$config.domain}/posts/{$post.slug}.html">{$post.title}</a>
+    <a class="article-title" name="{$post.slug}" href="{$config.domain}/posts/{$post.slug}.html">{$post.title}</a>
     <div class="date"> posted on {$post.date}</div>
     <div class="article">{$post.text |noAutoescape}</div>
   </div>
