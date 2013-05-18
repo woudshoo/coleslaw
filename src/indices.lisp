@@ -5,6 +5,19 @@
    (posts :initform nil :initarg :posts :accessor index-posts)
    (title :initform nil :initarg :title :accessor index-title)))
 
+(defclass tag-index (index) ())
+(defclass date-index (index) ())
+(defclass int-index (index) ())
+
+(defmethod page-url ((object index))
+  (index-id object))
+(defmethod page-url ((object tag-index))
+  (format nil "tag/~a" (index-id object)))
+(defmethod page-url ((object date-index))
+  (format nil "date/~a" (index-id object)))
+(defmethod page-url ((object int-index))
+  (format nil "~d" (index-id object)))
+
 (defmethod render ((object index) &key prev next)
   (funcall (theme-fn 'index) (list :tags (all-tags)
                                    :months (all-months)
@@ -12,19 +25,6 @@
                                    :index object
                                    :prev prev
                                    :next next)))
-
-(defclass tag-index (index) ())
-(defclass date-index (index) ())
-(defclass int-index (index) ())
-
-(defmethod page-path ((object index))
-  (rel-path (staging-dir *config*) (index-id object)))
-(defmethod page-path ((object tag-index))
-  (rel-path (staging-dir *config*) "tag/~a" (index-id object)))
-(defmethod page-path ((object date-index))
-  (rel-path (staging-dir *config*) "date/~a" (index-id object)))
-(defmethod page-path ((object int-index))
-  (rel-path (staging-dir *config*) "~d" (index-id object)))
 
 (defun all-months ()
   "Retrieve a list of all months with published content."
@@ -58,20 +58,19 @@
                               :posts (subseq content start end)
                               :title "Recent Posts")))
 
+(defun render-index (index &rest render-args)
+  "Render the given INDEX using RENDER-ARGS if provided."
+  (write-page (page-path index) (apply #'render-page index nil render-args)))
+
 (defun render-indices ()
   "Render the indices to view content in groups of size N, by month, and by tag."
   (let ((results (by-date (hash-table-values *content*))))
     (dolist (tag (all-tags))
-      (let ((index (index-by-tag tag results)))
-        (write-page (page-path index) (render-page index))))
+      (render-index (index-by-tag tag results)))
     (dolist (month (all-months))
-      (let ((index (index-by-month month results)))
-        (write-page (page-path index) (render-page index))))
+      (render-index (index-by-month month results)))
     (dotimes (i (ceiling (length results) 10))
-      (let ((index (index-by-n i results)))
-        (write-page (page-path index)
-                    (render-page index nil
-                                 :prev (and (plusp i) i)
-                                 :next (and (< (* (1+ i) 10) (length results))
-                                            (+ 2 i)))))))
-  (update-symlink "index.html" "1.html"))
+      (render-index (index-by-n i results)
+                    :prev (and (plusp i) i)
+                    :next (and (< (* (1+ i) 10) (length results))
+                               (+ 2 i))))))

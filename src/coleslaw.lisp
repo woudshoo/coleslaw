@@ -12,14 +12,18 @@
       (with-output-to-string (str)
         (3bmd:parse-string-and-print-to-stream text str)))))
 
-(defgeneric page-path (object)
-  (:documentation "The path to store OBJECT at once rendered."))
+(defgeneric page-url (object)
+  (:documentation "The url to the object, without the domain."))
 
-(defmethod page-path :around ((object t))
+(defmethod page-url :around ((object t))
   (let ((result (call-next-method)))
     (if (pathname-type result)
         result
         (make-pathname :type "html" :defaults result))))
+
+(defun page-path (object)
+  "The path to store OBJECT at once rendered."
+  (rel-path (staging-dir *config*) (namestring (page-url object))))
 
 (defun render-page (content &optional theme-fn &rest render-args)
   "Render the given CONTENT to disk using THEME-FN if supplied.
@@ -50,8 +54,9 @@ Additional args to render CONTENT can be passed via RENDER-ARGS."
                        (merge-pathnames "static" (repo *config*))))
       (when (probe-file dir)
         (run-program "cp -R ~a ." dir)))
-    (do-ctypes (publish ctype))
+    (do-ctypes (publish (make-keyword ctype)))
     (render-indices)
+    (update-symlink "index.html" "1.html")
     (render-feeds (feeds *config*))))
 
 (defgeneric deploy (staging)
@@ -63,15 +68,14 @@ Additional args to render CONTENT can be passed via RENDER-ARGS."
            (curr (rel-path dest ".curr")))
       (ensure-directories-exist new-build)
       (run-program "mv ~a ~a" staging new-build)
-      (when (probe-file prev)
-        (delete-directory-and-files (truename prev) :if-does-not-exist :ignore))
+      (when (and (probe-file prev) (truename prev))
+        (run-program "rm -r ~a" (truename prev)))
       (when (probe-file curr)
         (update-symlink prev (truename curr)))
       (update-symlink curr new-build))))
 
-(defun main (config-key)
-  "Load the user's config section corresponding to CONFIG-KEY, then
-compile and deploy the blog."
+(defun main (&optional config-key)
+  "Load the user's config file, then compile and deploy the blog."
   (load-config config-key)
   (load-content)
   (compile-theme (theme *config*))

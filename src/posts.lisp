@@ -10,8 +10,8 @@
                                   :prev prev
                                   :next next)))
 
-(defmethod page-path ((object post))
-  (rel-path (staging-dir *config*) "posts/~a" (content-slug object)))
+(defmethod page-url ((object post))
+  (format nil "posts/~a" (content-slug object)))
 
 (defmethod initialize-instance :after ((object post) &key)
   (with-accessors ((title post-title)
@@ -20,15 +20,6 @@
       (setf (content-slug object) (slugify title)
             format (make-keyword (string-upcase format))
             text (render-content text format))))
-
-(defmethod discover ((content-type (eql :post)))
-  (purge-all 'post)
-  (do-files (file (repo *config*) "post")
-    (let ((post (construct 'post (read-content file))))
-      (if (gethash (content-slug post) *content*)
-          (error "There is already an existing post with the slug ~a."
-                 (content-slug post))
-          (setf (gethash (content-slug post) *content*) post)))))
 
 (defmethod publish ((content-type (eql :post)))
   (loop for (next post prev) on (append '(nil) (by-date (find-all 'post)))
