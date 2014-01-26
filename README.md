@@ -14,7 +14,7 @@ Coleslaw aims to be flexible blog software suitable for replacing a single-user 
 * RSS and Atom feeds!
 * Markdown Support with Code Highlighting provided by [colorize](http://www.cliki.net/colorize).
   * Currently supports: Common Lisp, Emacs Lisp, Scheme, C, C++, Java, Python, Erlang, Haskell, Obj-C, Diff.
-* [Multi-site publishing](http://blub.co.za/posts/Adding-multi-site-support-to-Coleslaw.html) support.
+* [Multi-site publishing](http://rmoritz.github.io/articles/coleslaw-multi-site/) support.
 
 * A [Plugin API](http://github.com/redline6561/coleslaw/blob/master/docs/plugin-api.md) and [**plugins**](http://github.com/redline6561/coleslaw/blob/master/docs/plugin-use.md) for...
   * Comments via Disqus
@@ -27,7 +27,7 @@ Coleslaw aims to be flexible blog software suitable for replacing a single-user 
   * Importing posts from wordpress
 
 * There is also a [Heroku buildpack](https://github.com/jsmpereira/coleslaw-heroku) maintained by Jose Pereira.
-* Example sites: [redlinernotes](http://redlinernotes.com/blog/), [Nothing Really Matters](http://ironhead.xs4all.nl/), and [(lisp :is 'fun)](http://blub.co.za/).
+* Example sites: [redlinernotes](http://redlinernotes.com/blog/) and [Nothing Really Matters](http://ironhead.xs4all.nl/).
 
 ## Installation
 This software should be portable to any conforming Common Lisp implementation but this guide will assume SBCL is installed. Testing has also been done on CCL.
